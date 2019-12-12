@@ -2,11 +2,9 @@ import pymongo
 from threading import Thread
 
 def flood_database(db):
-        print("coucou")
-
         posts = list()
 
-        for i in range(0, 10):
+        for i in range(0, 100000):
                 posts.append({
                         "author": "Guide of galactic traveler",
                         "message": "The answer is 42"
@@ -21,9 +19,9 @@ if __name__ == '__main__':
         client = pymongo.MongoClient("mongodb+srv://Ludovic:Vv3t0Jc9PZd4Q7d7@commetuveux-cwxjt.mongodb.net/test?retryWrites=true&w=majority")
         db = client.asocial_network
 
-        thread_pool = 3
+        thread_pool = 8
 
-        if thread_pool >= 0:
+        while thread_pool >= 1:
                 thread = Thread(target=flood_database, args=(db,))
                 jobs.append(thread)
                 thread.start()
