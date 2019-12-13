@@ -9,7 +9,7 @@ from requests import post
 from random import randint, choice
 import string
 
-THREAD_RANGE = 1000
+THREAD_RANGE = 100
 
 
 def flood_database(db, start):
@@ -36,7 +36,7 @@ def _randomString(stringLength=10):
 
 def send_post():
     for i in range(THREAD_RANGE):
-        post("http://172.17.39.105:5000/post", json={
+        post("http://localhost:5000/post", json={
                 "id": randint(0, 2),
                 "author": _randomString(randint(0, 10)),
                 "message": _randomString(randint(0, 10))

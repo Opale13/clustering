@@ -36,7 +36,7 @@ class LoadBalancer():
     def _log(self, idx, data, style):
         with open("loadbalancer.log", "a") as logfile:
             now = datetime.now()
-            time = "{:2d}-{:2d}".format(now.hour, now.minute)
+            time = "{:02d}-{:02d}".format(now.hour, now.minute)
             logfile.write(time + ',' + str(idx) + ',' + style + '\n')
 
         print(data)
