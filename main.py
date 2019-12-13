@@ -6,7 +6,8 @@ from pymongo import MongoClient
 from threading import Thread
 from pprint import pprint
 from requests import post
-from random import randint
+from random import randint, choice
+import string
 
 THREAD_RANGE = 1000
 
@@ -27,17 +28,19 @@ def read_database(db):
         pprint(db.ludovic_collection.find_one({"id": i}))
 
 
-def send_post(start):
+def _randomString(stringLength=10):
+    """Generate a random string of fixed length """
+    letters = string.ascii_lowercase
+    return ''.join(choice(letters) for i in range(stringLength))
+
+
+def send_post():
     for i in range(THREAD_RANGE):
-        id = randint(0, 2)
-
-        post = {
-            "id": id,
-            "author": "Guide of galactic traveler",
-            "message": "The answer is 42"
-        }
-
-        post("http://172.17.39.105:5000/post", json=post)
+        post("http://172.17.39.105:5000/post", json={
+                "id": randint(0, 2),
+                "author": _randomString(randint(0, 10)),
+                "message": _randomString(randint(0, 10))
+            })
 
 
 if __name__ == '__main__':
@@ -54,7 +57,7 @@ if __name__ == '__main__':
     while i < thread_pool:
         # thread = Thread(target=flood_database, args=(db,i))
         # thread = Thread(target=read_database, args=(db,))
-        thread = Thread(target=send_post, args=(i,))
+        thread = Thread(target=send_post)
         jobs.append(thread)
         thread.start()
 
