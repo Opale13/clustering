@@ -5,7 +5,7 @@ Author: Merel Ludovic
 from pymongo import MongoClient
 from threading import Thread
 from pprint import pprint
-from requests import post
+from requests import post, get
 from random import randint, choice
 import string
 
@@ -36,24 +36,32 @@ def _randomString(stringLength=10):
 
 def send_post():
     for i in range(THREAD_RANGE):
-        post("http://localhost:5000/post", json={
-                "id": randint(0, 2),
-                "author": _randomString(randint(0, 10)),
-                "message": _randomString(randint(0, 10))
-            })
+        if randint(0,1):
+            post("http://localhost:5000/post", json={
+                    "id": randint(0, 2),
+                    "author": _randomString(randint(0, 10)),
+                    "message": _randomString(randint(0, 10))
+                })
+        
+        else:
+            post("http://localhost:5000/get", json={
+                    "id": randint(0, 2),
+                    "author": _randomString(randint(0, 10)),
+                    "message": _randomString(randint(0, 10))
+                })
 
 
 if __name__ == '__main__':
 
     jobs = list()
 
-    # client = pymongo.MongoClient("mongodb+srv://Ludovic:Vv3t0Jc9PZd4Q7d7@commetuveux-shard-00-01-cwxjt.mongodb.net/test?retryWrites=true&w=majority")
+    # client = pymongo.MongoClient("mongodb+srv://<username>:<psw>@commetuveux-shard-00-01-cwxjt.mongodb.net/test?retryWrites=true&w=majority")
     # db = client.asocial_network
 
     # db.ludovic_collection.drop()
     # db.ludovic_collection
 
-    i, thread_pool = 0, 7
+    i, thread_pool = 0, 3
     while i < thread_pool:
         # thread = Thread(target=flood_database, args=(db,i))
         # thread = Thread(target=read_database, args=(db,))

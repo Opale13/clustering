@@ -45,14 +45,14 @@ class LoadBalancer():
             self.__influxdb_psw = data["influxdb"]["credentials"]["password"]
 
     def _post(self, db, data):
-        self.__query["tags"]["database"] = str(self.__dbs.index(db));
+        self.__query["tags"]["database"] = str(self.__dbs.index(db))
         self.__query["fields"]["method"] = "post"
         self.__influxdb.write_points([self.__query])
 
         return db.group.insert_one(data).inserted_id
 
     def _get(self, db, data):
-        self.__query["tags"]["database"] = str(self.__dbs.index(db));
+        self.__query["tags"]["database"] = str(self.__dbs.index(db))
         self.__query["fields"]["method"] = "get"
         self.__influxdb.write_points([self.__query])
 
@@ -83,7 +83,7 @@ class LoadBalancer():
         return result
 
     def get(self, data):
-        if "auhtor" in data.keys():
+        if "author" in data.keys():
             pass
         else:
             data["author"] = ""

@@ -23,8 +23,8 @@ def setup_loadbalancer():
 def get():
     if request.is_json:
         data = request.get_json()
-        request = loadbalancer.get(data)
-        return str(request)
+        req = loadbalancer.get(data)
+        return str(req)
 
 @app.route("/post", methods=['GET','POST'])
 def post():
