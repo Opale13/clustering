@@ -2,35 +2,60 @@
 
 from pymongo import MongoClient
 from datetime import datetime
-
-"""
-    DB MongoDB
-    ----------
-    ip = 51.91.157.95
-    port = 27017, 27018, 27019
-    pwd = root, root
-"""
-
-"""
-    GRAPHANA
-    --------
-    ip = 51.91.157.95
-    port = 3000
-    pwd = 
-"""
-
-
+from influxdb import InfluxDBClient
+import json
 
 class LoadBalancer():
     
     def __init__(self):
         self.__dbs = []
-        pass
+
+        self.__influxdb_host = ""
+        self.__influxdb_port = 8086
+        self.__influxdb_username = ""
+        self.__influxdb_psw = ""
+
+        self._read_json()
+        self.__influxdb = InfluxDBClient(
+            host=self.__influxdb_host, 
+            port=self.__influxdb_port, 
+            username=self.__influxdb_username, 
+            password=self.__influxdb_psw, 
+            ssl=False, 
+            verify_ssl=False)
+
+        self.__influxdb.switch_database('asocialnetwork')
+
+        self.__query = {
+            "measurement": "mongodb",
+            "tags": {
+                "database": ""
+            },
+            "fields": {
+                "method": ""
+            }
+        }
+
+    def _read_json(self):
+        with open('config.json') as json_file:
+            data = json.load(json_file)
+            self.__influxdb_host = data["ip_server"]
+            self.__influxdb_port = data["influxdb"]["ports"][0]
+            self.__influxdb_username = data["influxdb"]["credentials"]["user"]
+            self.__influxdb_psw = data["influxdb"]["credentials"]["password"]
 
     def _post(self, db, data):
+        self.__query["tags"]["database"] = str(self.__dbs.index(db));
+        self.__query["fields"]["method"] = "post"
+        self.__influxdb.write_points([self.__query])
+
         return db.group.insert_one(data).inserted_id
 
     def _get(self, db, data):
+        self.__query["tags"]["database"] = str(self.__dbs.index(db));
+        self.__query["fields"]["method"] = "get"
+        self.__influxdb.write_points([self.__query])
+
         return db.group.find_one(data)
 
     def _log(self, idx, data, style):
