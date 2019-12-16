@@ -71,8 +71,6 @@ class LoadBalancer():
             now = datetime.now()
             time = "{:02d}-{:02d}".format(now.hour, now.minute)
             logfile.write(time + ',' + str(idx) + ',' + style + '\n')
-
-        print(data)
     
     def _dispatchRule(self, data):
         if "author" in data.keys():
