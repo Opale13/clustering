@@ -1,13 +1,11 @@
------------------------------------------------------------------------------------------
-		    Laboratoire de clustering de bases de données
------------------------------------------------------------------------------------------
+# Laboratoire de clustering de bases de données
 
 Afin d'explorer le clustering de bases de données, différentes options ont été testées au sein du groupe pendant les laboratoires:
 1. MongoDB cloud (NoSQL);
 2. Firebase (NoSQL);
 3. Solutions maisons.
 
-
+## Explications
 1. La première solution (Atlas et MongoDB dans le cloud) semblait répondre au cahier des charges car un système de distribution des données sur les trois noeuds d'un cluster est déjà codé et le sharding est également disponible dans les options.
 Cependant, l'activation de ces options est payante et ne sera donc pas effectuée dans le cadre de ce laboratoire.
 
