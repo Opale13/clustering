@@ -73,6 +73,13 @@ class LoadBalancer():
             logfile.write(time + ',' + str(idx) + ',' + style + '\n')
 
         print(data)
+    
+    def _dispatchRule(self, data):
+        if "author" in data.keys():
+            pass
+        else:
+            data["author"] = ""
+        return len(data["author"]) % len(self.__dbs)
         
     def connect(self, http):
         client = MongoClient(http)
@@ -80,22 +87,14 @@ class LoadBalancer():
         self.__dbs.append(db)
      
     def post(self, data):
-        if "author" in data.keys():
-            pass
-        else:
-            data["author"] = ""
-        idx = len(data["author"]) % len(self.__dbs)
+        idx = self._dispatchRule(data)
         db = self.__dbs[idx]
         result = self._post(db, data)
         self._log(idx, data, "post")
         return result
 
-    def get(self, data):
-        if "author" in data.keys():
-            pass
-        else:
-            data["author"] = ""
-        idx = len(data["author"]) % len(self.__dbs)
+    def get(self, data)
+        idx = self._dispatchRule(data)
         db = self.__dbs[idx]
         result = self._get(db, data)
         self._log(idx, data, "get")
