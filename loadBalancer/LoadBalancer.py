@@ -93,7 +93,7 @@ class LoadBalancer():
         self._log(idx, data, "post")
         return result
 
-    def get(self, data)
+    def get(self, data):
         idx = self._dispatchRule(data)
         db = self.__dbs[idx]
         result = self._get(db, data)
