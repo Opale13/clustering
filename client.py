@@ -8,24 +8,17 @@ from pprint import pprint
 from requests import post, get
 from random import randint, choice
 import string
+import json
 
 THREAD_RANGE = 100
+THREAD_POOL = 4
+IP_LOAD_BALANCER = None
 
-
-def flood_database(db, start):
-    for i in range(start * THREAD_RANGE, (start * THREAD_RANGE) + THREAD_RANGE):
-        post = {
-            "id": i,
-            "author": "Guide of galactic traveler",
-            "message": "The answer is 42"
-        }
-
-        db.ludovic_collection.insert_one(post)
-
-
-def read_database(db):
-    for i in range(0, THREAD_RANGE):
-        pprint(db.ludovic_collection.find_one({"id": i}))
+with open('config.json') as json_file:
+    data = json.load(json_file)
+    IP_LOAD_BALANCER = data["ip_load_balancer"]
+    THREAD_RANGE = data["thread_range"]
+    THREAD_POOL = data["thread_pool"]
 
 
 def _randomString(stringLength=10):
@@ -37,14 +30,14 @@ def _randomString(stringLength=10):
 def send_post():
     for i in range(THREAD_RANGE):
         if randint(0,1):
-            post("http://localhost:5000/post", json={
+            post("http://{}:5000/post".format(IP_LOAD_BALANCER), json={
                     "id": randint(0, 2),
                     "author": _randomString(randint(0, 10)),
                     "message": _randomString(randint(0, 10))
                 })
         
         else:
-            post("http://localhost:5000/get", json={
+            post("http://{}:5000/get".format(IP_LOAD_BALANCER), json={
                     "id": randint(0, 2),
                     "author": _randomString(randint(0, 10)),
                     "message": _randomString(randint(0, 10))
@@ -55,16 +48,8 @@ if __name__ == '__main__':
 
     jobs = list()
 
-    # client = pymongo.MongoClient("mongodb+srv://<username>:<psw>@commetuveux-shard-00-01-cwxjt.mongodb.net/test?retryWrites=true&w=majority")
-    # db = client.asocial_network
-
-    # db.ludovic_collection.drop()
-    # db.ludovic_collection
-
-    i, thread_pool = 0, 3
-    while i < thread_pool:
-        # thread = Thread(target=flood_database, args=(db,i))
-        # thread = Thread(target=read_database, args=(db,))
+    i = 0
+    while i < THREAD_POOL:
         thread = Thread(target=send_post)
         jobs.append(thread)
         thread.start()

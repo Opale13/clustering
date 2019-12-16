@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+'''
+Author: Bourguignon Maxime
+'''
+
 import matplotlib.pyplot as plt
 from datetime import datetime
 

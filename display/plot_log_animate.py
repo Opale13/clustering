@@ -1,3 +1,7 @@
+'''
+Author: Merel Ludovic
+'''
+
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from datetime import datetime
