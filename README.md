@@ -7,7 +7,7 @@ Afin d'explorer le clustering de bases de données, différentes options ont ét
 
 ## Explications
 1. La première solution (Atlas et MongoDB dans le cloud) semblait répondre au cahier des charges car un système de distribution des données sur les trois noeuds d'un cluster est déjà codé et le sharding est également disponible dans les options.
-Cependant, l'activation de ces options est payante et ne sera donc pas effectuée dans le cadre de ce laboratoire.
+Cependant, l'activation du load balancer est payante et ne sera donc pas effectuée dans le cadre de ce laboratoire.
 
 
 2. La seconde solution explorée (Firebase de Google) semblait également prometteuse car la distribution des données est codée.
